@@ -2,15 +2,20 @@
 int const WINDOW_WIDTH = 1280;
 int const WINDOW_HEIGHT = 720;
 int keys[999] = {};
-int x = 10, y = 10, h = 100, w = 20;
+int player1X = 0, player1Y = 10, h = 100, w = 20;
+int player2X = 1260, player2Y = 10;
+
+sf::RectangleShape player1(sf::Vector2f(w, h));
+sf::RectangleShape player2(sf::Vector2f(w, h));
 
 void updateGame();
 
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML works!");
-	sf::RectangleShape shape(sf::Vector2f(w,h));
-	shape.setFillColor(sf::Color::Green);
+	
+	player1.setFillColor(sf::Color::Green);
+	player2.setFillColor(sf::Color::Blue);
 
 	window.setVerticalSyncEnabled(false);
 
@@ -28,7 +33,8 @@ int main()
 		updateGame();
 
 		window.clear();
-		window.draw(shape);
+		window.draw(player1);
+		window.draw(player2);
 		window.display();
 	}
 
@@ -37,6 +43,16 @@ int main()
 
 void updateGame()
 {
-	if (keys[sf::Keyboard::Up]) y--;
-	if (keys[sf::Keyboard::Down]) y++;
+	if(player1Y > 0)
+		if (keys[sf::Keyboard::W]) player1Y--;
+	if(player1Y < WINDOW_HEIGHT - h)
+		if (keys[sf::Keyboard::S]) player1Y++;
+
+	if(player2Y > 0)
+		if (keys[sf::Keyboard::Up]) player2Y--;
+	if(player2Y < WINDOW_HEIGHT - h)
+		if (keys[sf::Keyboard::Down]) player2Y++;
+
+	player1.setPosition(player1X, player1Y);
+	player2.setPosition(player2X, player2Y);
 }
